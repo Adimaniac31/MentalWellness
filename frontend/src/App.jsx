@@ -1,36 +1,10 @@
-// import React, {useState,useEffect} from 'react'
+import React, {useState,useEffect} from 'react'
 
-// const App = () => {
-//   const [data,setData] = useState([]);
-  
-//   useEffect(()=>{
-//     fetch("/members").then(
-//       res => res.json()
-//     ).then(
-//       data => {
-//         setData(data)
-//         console.log(data)
-//       }
-//     )
-//   },[]);
-
-//   return (
-//     <div>
-
-//     </div>
-//   )
-// }
-
-// export default App
-
-import React , {useState,useEffect} from 'react'
-
-export default function App() {
-  
+const App = () => {
   const [data,setData] = useState([]);
   
   useEffect(()=>{
-    fetch("/members").then(
+    fetch("http://localhost:5000/members").then(
       res => res.json()
     ).then(
       data => {
@@ -39,9 +13,20 @@ export default function App() {
       }
     )
   },[]);
-  
+
   return (
-    <div>App</div>
+    <div>
+      {(typeof data.members === 'undefined') ? (
+        <p>Loading....</p>
+      ):(
+        data.members.map((member,i) => (
+          <p key={i}>
+            {member}
+          </p>
+        ))
+      )}
+    </div>
   )
 }
 
+export default App
