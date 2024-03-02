@@ -9,9 +9,9 @@ import AboutUs from './Pages/AboutUs';
 
 const App = () => {
     return (
-        <>
-        <Navbar />
+        <div>
         <BrowserRouter>
+        <Navbar />
         <Routes>
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/chat" element={<ChatPage />}></Route>
@@ -20,7 +20,7 @@ const App = () => {
             <Route path="/about-us" element={<AboutUs />}></Route>
         </Routes>
         </BrowserRouter>
-        </>
+        </div>
     );
 }
 
