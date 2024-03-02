@@ -1,51 +1,55 @@
-import React,{useState} from 'react';
-// import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import psychiatrist from "../assets/psychiatrist.png";
 import send from "../assets/send.png";
 
 const ClassifyPage = () => {
   const [inputText, setInputText] = useState('');
-  // const history = useHistory();
+  const navigate = useNavigate();
 
-  // const handleSendClick = async () => {
-  //   try {
-  //     // Send the input to the API
-  //     const response = await fetch('http://127.0.0.1:5000/predict', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ post_text: inputText }),
-  //     });
+  const handleSendClick = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ post_text: inputText }),
+      });
 
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch data from the server');
-  //     }
+      if (response.ok) {
+        const result = await response.json();
+        // Redirect to the result page with the classification result
+        navigate('/classify-result', { state: { result } });
+      } else {
+        console.error("Failed to fetch classification result");
+      }
+    } catch (error) {
+      console.error("Error occurred while fetching classification result", error);
+    }
+  };
 
-  //     // Parse the JSON response
-  //     const result = await response.json();
-
-  //     // Redirect to the result page with the result data
-  //     history.push('/result', { result });
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     // Handle errors or display an error message to the user
-  //   }
-  // };
   return (
     <div>
-      <div>
-        <img src={psychiatrist}></img>
-        <span>Hey! How are you feeling today?</span>
+      <div className='flex flex-row justify-center items-center mt-12 gap-8'>
+        <img src={psychiatrist} className='h-32 w-32'></img>
+        <span className='text-3xl font-bold'>Hey! How are you feeling today?</span>
       </div>
       <div className=''>
-      <div>
-        <textarea id="input" rows="10" cols="100" value={inputText}
-            onChange={(e) => setInputText(e.target.value)}></textarea>
-      </div>
-      <div>
-        <img src={send}></img>
-      </div>
+        <div className='flex flex-row justify-center items-center mt-12 gap-8'>
+          <textarea
+            id="input"
+            rows="10"
+            cols="100"
+            value={inputText}
+            placeholder="Enter your Emotions here....."
+            onChange={(e) => setInputText(e.target.value)}
+            className='border-4'
+          ></textarea>
+          <div onClick={handleSendClick} className='h-32 w-32 hover:drop-shadow-xl hover:-rotate-45 duration-100 ease-in'>
+            <img src={send}></img>
+          </div>
+        </div>
       </div>
     </div>
   )
